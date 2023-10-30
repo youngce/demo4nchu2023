@@ -1,6 +1,7 @@
 # Demo Codes
 ## Prerequisite
 1. [Install Docker](https://docs.docker.com/get-docker/)
+1. git
 <!-- 2. [run spark on docker](https://hub.docker.com/r/apache/spark) -->
 
 ### Linux or MacOs
