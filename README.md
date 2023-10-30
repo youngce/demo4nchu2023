@@ -3,9 +3,12 @@
 1. [Install Docker](https://docs.docker.com/get-docker/)
 <!-- 2. [run spark on docker](https://hub.docker.com/r/apache/spark) -->
 
-下載測試資料
+### Linux or MacOs
+
 ```bash
+git clone https://github.com/youngce/demo4nchu2023.git
 cd data/
+## 下載測試資料
 # spark's readme doc
 wget https://raw.githubusercontent.com/apache/spark/master/README.md
 # movielens dataset https://grouplens.org/datasets/movielens/
@@ -13,11 +16,15 @@ wget https://files.grouplens.org/datasets/movielens/ml-25m.zip && unzip ml-25m.z
 
 cd ..
 
-
 ```
+### Windows
+拿以上的指令去問問ChatGPT吧！～
+
 ## RDBMS Demo
 
 ```bash
+# 移除已存在的MySQL Server
+docker rm -f some-mysql 
 # Setup Mysql Server
 docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:8.2
 # connect to Mysql Server
@@ -109,9 +116,9 @@ SELECT tags.tag_name
 FROM tags
 JOIN book_tags ON tags.tag_id = book_tags.tag_id
 WHERE book_tags.book_id = 2; -- Retrieve tags for book with book_id 2 (1984)
-
-
 ```
+
+
 
 ## PySpark Demo
 ### Launch PySpark
@@ -160,7 +167,7 @@ word_counts = text_file.flatMap(lambda line: line.split(" ")) \
 word_counts.collect()
 ```
 
-### Case 3: Data Profiling
+### Case 3: Spark SQL
 
 ```python
 
@@ -168,7 +175,15 @@ word_counts.collect()
 df=spark.read.option("header","true").option("inferSchema","true").csv("ml-25m/ratings.csv")
 df.show()
 df.printSchema()
-df.describe().show()
+
+sql("show tables").show()
+df.createOrReplaceTempView("ratings")
+sql("show tables").show()
+
+# 計算movieId 1088的平均評價分數
+sql("select avg(rating) from ratings where movieId=1088").show()
+
 
 ```
+[more examples(將連結中路徑`ml-20m` 改為`ml-25m`應可正常執行)](https://github.com/nadia1123/movielens-dataset-with-pyspark/blob/master/Exploring%20the%20MovieLens%20Dataset%20with%20pySpark.ipynb)
 
